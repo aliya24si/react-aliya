@@ -11,6 +11,8 @@ const AuthLayout = React.lazy(() => import("./layouts/AuthLayout"));
 const Dashboard = React.lazy(() => import("./pages/Dashboard"));
 const Orders = React.lazy(() => import("./pages/Orders"));
 const Customers = React.lazy(() => import("./pages/Customers"));
+const Product = React.lazy(() => import("./pages/Product"));
+const ProductDetail = React.lazy(() => import("./pages/ProductDetail"))
 
 // Auth Pages
 const Login = React.lazy(() => import("./pages/auth/Login"));
@@ -32,6 +34,8 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/customers" element={<Customers />} />
+          <Route path="/product" element={<Product />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/error-400" element={<Error400 />} />
           <Route path="/error-401" element={<Error401 />} />
