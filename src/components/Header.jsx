@@ -46,7 +46,7 @@ export default function Header({ onSearchClick }) {
           <div className="flex flex-col text-right">
             <span className="text-sm text-gray-500">Hello,</span>
             <span className="font-bold text-gray-800 leading-tight text-sm">
-              Minionnn
+              Aliyaaa
             </span>
           </div>
           <img
