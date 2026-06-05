@@ -31,16 +31,6 @@ export default function Header({ onSearchClick }) {
           </span>
         </div>
 
-        {/* Chart */}
-        <div className="cursor-pointer rounded-2xl bg-blue-100 p-3 hover:bg-blue-200 transition-colors">
-          <FcAreaChart />
-        </div>
-
-        {/* Settings */}
-        <div className="cursor-pointer rounded-2xl bg-red-100 p-3 text-red-500 hover:bg-red-200 transition-colors">
-          <SlSettings />
-        </div>
-
         {/* Profile */}
         <div className="flex items-center space-x-4 border-l border-gray-300 pl-4">
           <div className="flex flex-col text-right">
