@@ -5,6 +5,7 @@ import {
   MdError,
   MdShoppingBag,
   MdExtension,
+  MdAutoAwesome,
 } from "react-icons/md"; // Tambah MdError
 import { NavLink } from "react-router-dom";
 
@@ -62,6 +63,12 @@ export default function Sidebar() {
             <NavLink to="/components" className={menuClass}>   
               <MdExtension className="mr-4 text-2xl" />
               <span className="text-lg">Components</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/fitur-xyz" className={menuClass}>
+              <MdAutoAwesome className="mr-4 text-2xl" />
+              <span className="text-lg">Fitur XYZ</span>
             </NavLink>
           </li>
         </ul>

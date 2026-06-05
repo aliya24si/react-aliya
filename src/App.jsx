@@ -14,6 +14,7 @@ const Customers = React.lazy(() => import("./pages/Customers"));
 const Product = React.lazy(() => import("./pages/Product"));
 const ProductDetail = React.lazy(() => import("./pages/ProductDetail"))
 const Components = React.lazy(() => import("./pages/Components"))
+const FiturXyz = React.lazy(() => import("./pages/FiturXyz"))
 
 // Auth Pages
 const Login = React.lazy(() => import("./pages/auth/Login"));
@@ -38,6 +39,7 @@ function App() {
           <Route path="/product" element={<Product />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/components" element={<Components />} />
+          <Route path="/fitur-xyz" element={<FiturXyz />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/error-400" element={<Error400 />} />
           <Route path="/error-401" element={<Error401 />} />
