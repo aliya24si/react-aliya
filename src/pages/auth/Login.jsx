@@ -1,12 +1,12 @@
-import axios from "axios";
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { BsFillExclamationDiamondFill } from "react-icons/bs";
 import { ImSpinner2 } from "react-icons/im";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Login() {
-  /* navigate, state & handleChange*/
   const navigate = useNavigate();
+  const { signIn } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [dataForm, setDataForm] = useState({
@@ -16,56 +16,33 @@ export default function Login() {
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;
-    setDataForm({
-      ...dataForm,
-      [name]: value,
-    });
+    setDataForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  /* process form */
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setLoading(true);
-    setError(false);
+    setError("");
 
-    axios
-      .post("https://dummyjson.com/user/login", {
-        username: dataForm.email,
-        password: dataForm.password,
-      })
-      .then((response) => {
-        // Jika status bukan 200, tampilkan pesan error
-        if (response.status !== 200) {
-          setError(response.data.message);
-          return;
-        }
-
-        // Redirect ke dashboard jika login sukses
-        navigate("/");
-      })
-      .catch((err) => {
-        if (err.response) {
-          setError(err.response.data.message || "An error occurred");
-        } else {
-          setError(err.message || "An unknown error occurred");
-        }
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    try {
+      await signIn({ email: dataForm.email, password: dataForm.password });
+      navigate("/");
+    } catch (err) {
+      setError(err.message || "Login failed. Please check your credentials.");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  /* error & loading status */
   const errorInfo = error ? (
-    <div className="bg-red-200 mb-5 p-5 text-sm font-light text-gray-600 rounded flex items-center">
-      <BsFillExclamationDiamondFill className="text-red-600 me-2 text-lg" />
+    <div className="mb-5 flex items-center rounded-lg bg-red-50 p-4 text-sm text-red-700 ring-1 ring-red-200">
+      <BsFillExclamationDiamondFill className="me-2 text-lg text-red-500" />
       {error}
     </div>
   ) : null;
 
   const loadingInfo = loading ? (
-    <div className="bg-gray-200 mb-5 p-5 text-sm rounded flex items-center">
+    <div className="mb-5 flex items-center rounded-lg bg-gray-100 p-4 text-sm text-gray-600">
       <ImSpinner2 className="me-2 animate-spin" />
       Mohon Tunggu...
     </div>
@@ -73,51 +50,72 @@ export default function Login() {
 
   return (
     <div>
-      <h2 className="text-2xl font-semibold text-gray-700 mb-6 text-center">
+      <h2 className="mb-6 text-center text-2xl font-semibold text-gray-700">
         Welcome Back 👋
       </h2>
 
       {errorInfo}
-
       {loadingInfo}
 
       <form onSubmit={handleSubmit}>
         <div className="mb-5">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="email" className="mb-1 block text-sm font-medium text-gray-700">
             Email Address
           </label>
           <input
+            id="email"
             name="email"
             onChange={handleChange}
-            type="text"
-            id="email"
-            className="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm
-                            placeholder-gray-400"
+            type="email"
+            value={dataForm.email}
+            required
+            autoComplete="email"
+            className="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 shadow-sm placeholder-gray-400"
             placeholder="you@example.com"
           />
         </div>
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="password" className="mb-1 block text-sm font-medium text-gray-700">
             Password
           </label>
           <input
+            id="password"
             name="password"
             onChange={handleChange}
             type="password"
-            id="password"
-            className="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm
-                            placeholder-gray-400"
+            value={dataForm.password}
+            required
+            autoComplete="current-password"
+            className="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 shadow-sm placeholder-gray-400"
             placeholder="********"
           />
         </div>
+
+        <div className="mb-4 flex items-center justify-between text-sm">
+          <label className="flex items-center gap-2 text-gray-600">
+            <input type="checkbox" className="rounded border-gray-300" />
+            Remember me
+          </label>
+          <Link to="/forgot" className="text-green-600 hover:text-green-700 hover:underline">
+            Forgot Password?
+          </Link>
+        </div>
+
         <button
           type="submit"
-          className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4
-                        rounded-lg transition duration-300"
+          disabled={loading}
+          className="w-full rounded-lg bg-green-500 px-4 py-2 font-semibold text-white transition duration-300 hover:bg-green-600 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          Login
+          {loading ? "Signing in..." : "Login"}
         </button>
       </form>
+
+      <p className="mt-6 text-center text-sm text-gray-500">
+        Don&apos;t have an account?{" "}
+        <Link to="/register" className="font-semibold text-green-600 hover:text-green-700 hover:underline">
+          Sign up
+        </Link>
+      </p>
     </div>
   );
 }
